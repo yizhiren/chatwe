@@ -6,8 +6,7 @@ var logsystem = require('./logsystem')
 logsystem.set_logging({})
 
 var core = new Core()
-//logsystem.set_logging({loggingLevel:'debug'})
-logger.level='debug'
+logsystem.set_logging('debug')
 core.registerMessageHandler(1,function(msg){
 	fromUser = msg.From
 	toUser = msg.To

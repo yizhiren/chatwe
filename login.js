@@ -408,6 +408,7 @@ async function sync_check() {
 	        'synckey'  : this.loginInfo['synckey'],
 	        '_'        : this.loginInfo['logintime']
     	},
+    	timeout: 180*1000,
     	method: 'GET'
 	}
 

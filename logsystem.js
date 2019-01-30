@@ -6,7 +6,7 @@ class LogSystem {
         this.showOnCmd = true
         this.loggingFile = undefined
 
-        this.logger = log4js.getLogger('itchat')
+        this.logger = log4js.getLogger('chatwe')
         this.set_console_with_level('info')
     }
 
@@ -23,7 +23,7 @@ class LogSystem {
         });
     }
 
-    set_logging({showOnCmd=true, loggingFile=undefined, loggingLevel='info'}) {
+    set_logging(loggingLevel='info',showOnCmd=true, loggingFile=undefined) {
 
         let appenders = {}
         let appendersName = []
