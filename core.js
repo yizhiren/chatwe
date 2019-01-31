@@ -3,6 +3,7 @@ let Config = require('./config')
 let FileCookieStore = require('tough-cookie-filestore-fix');
 let fs = require('fs')
 let Login = require('./login')
+let Messages = require('./messages')
 
 let instNum = 0
 class Core{
@@ -40,6 +41,7 @@ class Core{
 		    }
         })
         Login.Register(this)
+        Messages.Register(this)
 
         instNum ++
     }

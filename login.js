@@ -209,11 +209,19 @@ function pickupDifferentInitContact(contactList) {
         		this.init_mpList.push(item)
         	}
         } else if('weixin' == item['UserName'] || 'filehelper' == item['UserName']){
-        	this.init_mpList.push(item)
+        	this.init_memberList.push(item)
         } else {
         	logger.info('unknow contact:', item)
         }
     }
+}
+
+function get_myname() {
+	return this.loginInfo['User']['UserName']
+}
+
+function get_myNickName() {
+	return this.loginInfo['User']['NickName']
 }
 
 async function web_init() {
@@ -318,7 +326,7 @@ function pickupDifferentTotalMember(memberList) {
         } else if('filehelper' == item['UserName']) {
         	this.memberList.push(item)
         } else if('weixin' == item['UserName'] || 'filehelper' == item['UserName']){
-        	this.mpList.push(item)
+        	this.memberList.push(item)
         } else {
         	logger.info('unknow member:', item)
         }
@@ -510,34 +518,38 @@ function update_contact(contacts) {
 			continue
 		}
 
-		this.pickupDifferentTotalMember([contact])
+		pickupDifferentTotalMember.call(this, [contact])
+
 	}
 }
+
 
 function find_user(userName) {
 	logger.debug("find_user :", userName)
 	idx = util.search_dict_list(this.memberList, 'UserName', userName)
 	if(idx >= 0){
-		return this.memberList[idx]
+		return ['friend',this.memberList[idx]]
 	}
 
 	idx = util.search_dict_list(this.mpList, 'UserName', userName)
 	if(idx >= 0){
-		return this.mpList[idx]
+		return ['mp',this.mpList[idx]]
 	}	
 
 	idx = util.search_dict_list(this.chatroomList, 'UserName', userName)
 	if(idx >= 0){
-		return this.chatroomList[idx]
+		return ['chatroom',this.chatroomList[idx]]
 	}
 
-	return {}
+	return ['',{}]
 }
 
 function default_handler(msg) {
 	fromUser = msg.From
 	toUser = msg.To
 	notifyUsers = msg.NotifyUsers
+	content = msg.Content
+	msgType = msg.MsgType
 
 	fromName = fromUser.NickName
 	if(fromUser.RemarkName && ''!=fromUser.RemarkName) {
@@ -552,40 +564,41 @@ function default_handler(msg) {
 		notifyName += util.emoji_formatter(notifyUsers[i],'NickName') + ','
 	}
 
-	console.log("[%d]%s -> %s : %s => %s", msgType, fromName, toName, unesacpetext(content), notifyName)
+	console.log("[%d]%s -> %s : %s => %s", msgType, fromName, toName, content, notifyName)
 }
 
 async function produce_msg(msgList) {
 	logger.debug("produce_msg :", msgList)
 
 	for (let key in msgList) {
-		msg = msgList[key]
-		fromUser = this.find_user(msg.FromUserName)
-		toUser = this.find_user(msg.ToUserName)
-		notifyUserNames = msg.StatusNotifyUserName.split(',')
+		let msg = msgList[key]
+		let [fromType,fromUser] = this.find_user(msg.FromUserName)
+		let [toType,toUser] = this.find_user(msg.ToUserName)
+		let notifyUserNames = msg.StatusNotifyUserName.split(',')
 		logger.debug('notifyUserNames:',notifyUserNames)
-		notifyUsers = []
+		let notifyUsers = []
 		for (let i in notifyUserNames){
 			if('' != notifyUserNames[i]) {
-				notifyUsers.push(this.find_user(notifyUserNames[i]))
+				let [_, notifyUser] = this.find_user(notifyUserNames[i])
+				notifyUsers.push(notifyUser)
 			}
 		}
-		content = msg.Content
-		msgType = msg.MsgType
+		let content = msg.Content
+		let msgType = msg.MsgType
 
-		msgToProcess = {
+		let msgToProcess = {
 			From: fromUser,
 			To: toUser,
 			NotifyUsers: notifyUsers,
-			Context: unesacpetext(content),
+			Content: unesacpetext(content),
 			Type: msgType,
+			FromType: fromType,
 			OrigMsg: msg
 		}
 		
+		this.default_handler(msgToProcess)
 		if(typeof(MessageHandler[msgType]) == 'function'){
-			MessageHandler[msgType](msgToProcess)
-		} else {
-			this.default_handler(msgToProcess)
+			MessageHandler[msgType].call(this, msgToProcess)
 		}
 
 	}
@@ -698,5 +711,7 @@ module.exports.Register =  function(core) {
 	core.find_user = find_user
 	core.default_handler = default_handler
 	core.registerMessageHandler = registerMessageHandler
+	core.get_myname = get_myname
+	core.get_myNickName = get_myNickName
 }
 
