@@ -416,7 +416,7 @@ async function sync_check() {
 	        'synckey'  : this.loginInfo['synckey'],
 	        '_'        : this.loginInfo['logintime']
     	},
-    	timeout: 180*1000,
+    	timeout: 60*1000,
     	method: 'GET'
 	}
 
@@ -598,7 +598,7 @@ async function produce_msg(msgList) {
 		
 		this.default_handler(msgToProcess)
 		if(typeof(MessageHandler[msgType]) == 'function'){
-			MessageHandler[msgType].call(this, msgToProcess)
+			await MessageHandler[msgType].call(this, msgToProcess)
 		}
 
 	}
