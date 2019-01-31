@@ -633,9 +633,10 @@ async function start_receiving() {
 			logger.warn(err)
 
 			retryCount += 1
-			if(retryCount >= 5) {
+			if(retryCount >= 500) {
 				this.isLogined = false
 			} else {
+				await wait_one_second()
 				await wait_one_second()
 			}
 		}
