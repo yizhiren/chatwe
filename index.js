@@ -30,7 +30,8 @@ core.registerMessageHandler(1,async function(msg){
 		} else if (content == '4') {
 			await this.reply_file_to('filehelper', 'resource/4.json')
 		} else {
-			replyContent = `[托管中]${this.get_showname(toUser)}您好,${this.get_mynickname()}已经收到您的消息，请您稍等，不要拉黑，不要焦虑，马上回复您，建议您急事直接打电话15858178942.`
+			await this.reply_file_to('filehelper', 'resource/1.gif')
+			replyContent = `[托管中]${this.get_showname(fromUser)}您好,已经收到您的消息，我马上跑着去通知${this.get_mynickname()}，建议您急事直接打电话15858178942.`
 		}
 
 		let issucc = await this.reply_to('filehelper',replyContent)
@@ -46,8 +47,9 @@ core.registerMessageHandler(1,async function(msg){
 		return true
 	}
 
-	replyContent = `[托管中]${this.get_showname(fromUser)}您好,${this.get_mynickname()}已经收到您的消息，请您稍等，不要拉黑，不要焦虑，马上回复您，建议您急事直接打电话15858178942.`
-	//let issucc = await this.reply(msg,replyContent)
+	await this.reply_file_to('filehelper', 'resource/1.gif')
+	replyContent = `[托管中]${this.get_showname(fromUser)}您好,已经收到您的消息，我马上跑着去通知${this.get_mynickname()}，建议您急事直接打电话15858178942.`
+	let issucc = await this.reply(msg,replyContent)
 	console.log('Reply ' + (issucc?'OK':'FAIL'))
 	return issucc
 
