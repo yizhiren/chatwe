@@ -220,8 +220,17 @@ function get_myname() {
 	return this.loginInfo['User']['UserName']
 }
 
-function get_myNickName() {
+function get_mynickname() {
 	return this.loginInfo['User']['NickName']
+}
+
+function get_showname(user) {
+	let showname = user.RemarkName
+	if(showname==''){
+		showname = user.NickName
+	}
+
+	return showname
 }
 
 async function web_init() {
@@ -713,6 +722,7 @@ module.exports.Register =  function(core) {
 	core.default_handler = default_handler
 	core.registerMessageHandler = registerMessageHandler
 	core.get_myname = get_myname
-	core.get_myNickName = get_myNickName
+	core.get_mynickname = get_mynickname
+	core.get_showname = get_showname
 }
 
