@@ -377,12 +377,18 @@ async function reply_file_to(userName, filename) {
 
 }
 
+async function reply_file(msg, filename) {
+	logger.debug('reply_file()')
+	return await this.reply_file_to(msg.From.UserName, filename)
+}
+
 
 module.exports.Register =  function(core) {
 	core.reply = reply
 	core.reply_to = reply_to
 	core.upload_file_chunk = upload_file_chunk
 	core.upload_file_to = upload_file_to
+	core.reply_file = reply_file
 	core.reply_file_to = reply_file_to
 	core.send_video_to = send_video_to
 	core.send_emoticon_to = send_emoticon_to

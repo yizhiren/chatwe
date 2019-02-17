@@ -47,7 +47,7 @@ core.registerMessageHandler(1,async function(msg){
 		return true
 	}
 
-	await this.reply_file_to('filehelper', 'resource/1.gif')
+	await this.reply_file(msg, 'resource/1.gif')
 	replyContent = `[托管中]${this.get_showname(fromUser)}您好,已经收到您的消息，我马上跑着去通知${this.get_mynickname()}，建议您急事直接打电话15858178942.`
 	let issucc = await this.reply(msg,replyContent)
 	console.log('Reply ' + (issucc?'OK':'FAIL'))
