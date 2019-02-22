@@ -6,13 +6,10 @@ let url = require('url');
 let cheerio = require('cheerio')
 let util = require('./utils')
 let unesacpetext = require('unescape');
+let fs = require('fs')
+let MsgTypes = Config.MSG_TYPES
+let MessageHandler = require('./msghandler').MessageHandler
 
-
-MessageHandler={}
-
-function registerMessageHandler(type,handler){
-	MessageHandler[type] = handler
-}
 
 async function wait_one_second() {
 
@@ -476,14 +473,14 @@ async function get_msg() {
 
 	return this.s(options)
 	    .then(function (resp) {
-	    	logger.debug('get_msg resp :', resp)
+	    	logger.debug('get_msg resp :', JSON.stringify(resp))
 	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
 	    	logger.debug('get_msg issucc :', issucc)
 	    	if(issucc){
 			    self.loginInfo['SyncKey'] = resp['SyncKey']
 				synckey = ''
-			    for (let key in resp['SyncKey']['List']) {
-			    	item = resp['SyncKey']['List'][key]
+			    for (let key in resp['SyncCheckKey']['List']) {
+			    	item = resp['SyncCheckKey']['List'][key]
 			        synckey += item['Key'] + '_' + item['Val'] + '|'
 			    }
 			    self.loginInfo['synckey'] = synckey.substr(0, synckey.length - 1)
@@ -553,69 +550,8 @@ function find_user(userName) {
 	return ['',{}]
 }
 
-function default_handler(msg) {
-	fromUser = msg.From
-	toUser = msg.To
-	notifyUsers = msg.NotifyUsers
-	content = msg.Content
-	msgType = msg.MsgType
-
-	fromName = fromUser.NickName
-	if(fromUser.RemarkName && ''!=fromUser.RemarkName) {
-		fromName += '(' + fromUser.RemarkName + ')'
-	}
-	toName = toUser.NickName
-	if(toUser.RemarkName && ''!=toUser.RemarkName) {
-		toName += '(' + toUser.RemarkName + ')'
-	}
-	notifyName = 'NotifyName:'
-	for (let i in notifyUsers){
-		notifyName += util.emoji_formatter(notifyUsers[i],'NickName') + ','
-	}
-
-	console.log("[%d]%s -> %s : %s => %s", msgType, fromName, toName, content, notifyName)
-}
-
-async function produce_msg(msgList) {
-	logger.debug("produce_msg :", msgList)
-
-	for (let key in msgList) {
-		let msg = msgList[key]
-		let [fromType,fromUser] = this.find_user(msg.FromUserName)
-		let [toType,toUser] = this.find_user(msg.ToUserName)
-		let notifyUserNames = msg.StatusNotifyUserName.split(',')
-		logger.debug('notifyUserNames:',notifyUserNames)
-		let notifyUsers = []
-		for (let i in notifyUserNames){
-			if('' != notifyUserNames[i]) {
-				let [_, notifyUser] = this.find_user(notifyUserNames[i])
-				notifyUsers.push(notifyUser)
-			}
-		}
-		let content = msg.Content
-		let msgType = msg.MsgType
-
-		let msgToProcess = {
-			From: fromUser,
-			To: toUser,
-			NotifyUsers: notifyUsers,
-			Content: unesacpetext(content),
-			Type: msgType,
-			FromType: fromType,
-			OrigMsg: msg
-		}
-		
-		this.default_handler(msgToProcess)
-		if(typeof(MessageHandler[msgType]) == 'function'){
-			await MessageHandler[msgType].call(this, msgToProcess)
-		}
-
-	}
-	
-}
-
-async function start_receiving() {
-	logger.debug("start_receiving()")
+async function loop_receiving() {
+	logger.debug("loop_receiving()")
 	retryCount = 0
 	while(this.isLogined) {
 		try{
@@ -627,7 +563,7 @@ async function start_receiving() {
 				continue;
 			} else {
 				messages = await this.get_msg()
-				logger.debug("start_receiving got:", messages)
+				logger.debug("loop_receiving got:", messages)
 				if(messages){
 					modContactList = messages.ModContactList
 					this.update_contact(modContactList)
@@ -696,7 +632,7 @@ async function login() {
 	await this.show_mobile_login()
 	await this.get_contact()
 	util.clear_screen()
-	this.start_receiving()
+	this.loop_receiving()
 
 }
 
@@ -711,16 +647,12 @@ module.exports.Register =  function(core) {
 	core.web_init = web_init
 	core.show_mobile_login = show_mobile_login
 	core.get_contact = get_contact
-	core.start_receiving = start_receiving
+	core.loop_receiving = loop_receiving
 	core.sync_check = sync_check
 	core.logout = logout
-	core.start_receiving = start_receiving
 	core.get_msg = get_msg
 	core.update_contact = update_contact
-	core.produce_msg = produce_msg
 	core.find_user = find_user
-	core.default_handler = default_handler
-	core.registerMessageHandler = registerMessageHandler
 	core.get_myname = get_myname
 	core.get_mynickname = get_mynickname
 	core.get_showname = get_showname

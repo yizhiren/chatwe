@@ -1,9 +1,11 @@
 let rp = require('request-promise');
+let r = require('request');
 let Config = require('./config')
 let FileCookieStore = require('tough-cookie-filestore-fix');
 let fs = require('fs')
 let Login = require('./login')
 let Messages = require('./messages')
+let MsgHandler = require('./msghandler')
 
 let instNum = 0
 class Core{
@@ -40,8 +42,15 @@ class Core{
 		        'User-Agent': Config.USER_AGENT
 		    }
         })
+        this.s0 = r.defaults({
+            jar: this.cookieJar,
+            headers: {
+                'User-Agent': Config.USER_AGENT
+            }
+        })
         Login.Register(this)
         Messages.Register(this)
+        MsgHandler.Register(this)
 
         instNum ++
     }

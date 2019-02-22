@@ -9,7 +9,25 @@ logsystem.set_logging('debug')
 
 isEnabled = true
 
-core.registerMessageHandler(1,async function(msg){
+core.registerPictureHandler(async function(msg){
+	let resp = await msg.Download()
+	console.log('Download Pic ' + msg.Content, resp)
+	await this.reply(msg,'[已送达]')
+})
+
+core.registerVideoHandler(async function(msg){
+	let resp = await msg.Download()
+	console.log('Download Video ' + msg.Content, resp)
+	await this.reply(msg,'[已送达]')
+})
+
+core.registerVoiceHandler(async function(msg){
+	let resp = await msg.Download()
+	console.log('Download Vioce ' + msg.Content, resp)
+	await this.reply(msg,'[已送达]')
+})
+
+core.registerTextHandler(async function(msg){
 	fromUser = msg.From
 	toUser = msg.To
 	content = msg.Content
@@ -31,7 +49,7 @@ core.registerMessageHandler(1,async function(msg){
 			await this.reply_file_to('filehelper', 'resource/4.json')
 		} else {
 			await this.reply_file_to('filehelper', 'resource/1.gif')
-			replyContent = `[托管中]${this.get_showname(fromUser)}您好,已经收到您的消息，我马上跑着去通知${this.get_mynickname()}，建议您急事直接打电话15858178942.`
+			replyContent = `[托管中]${fromUser.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
 		}
 
 		let issucc = await this.reply_to('filehelper',replyContent)
@@ -48,7 +66,7 @@ core.registerMessageHandler(1,async function(msg){
 	}
 
 	await this.reply_file(msg, 'resource/1.gif')
-	replyContent = `[托管中]${this.get_showname(fromUser)}您好,已经收到您的消息，我马上跑着去通知${this.get_mynickname()}，建议您急事直接打电话15858178942.`
+	replyContent = `[托管中]${fromUser.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
 	let issucc = await this.reply(msg,replyContent)
 	console.log('Reply ' + (issucc?'OK':'FAIL'))
 	return issucc
