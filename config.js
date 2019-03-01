@@ -29,6 +29,9 @@ module.exports = {
 	  MSGTYPE_SHARECARD: 42,
 	  MSGTYPE_SYS: 1e4,
 	  MSGTYPE_RECALLED: 10002,
-	}
+	},
+	USER_TYPE_FRIEND: 'friend',
+	USER_TYPE_MP: 'mp',
+	USER_TYPE_CHATROOM: 'chatroom'
 
 }

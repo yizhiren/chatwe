@@ -16,14 +16,16 @@ class Core{
         this.loginInfo = {}
 
         this.uuid = ''
+        
         this.memberList = []
         this.mpList = []
         this.chatroomList = []
-        this.subscribeList = []
 
         this.init_memberList = []
         this.init_mpList = []
         this.init_chatroomList = []
+
+        //
         this.init_subscribeList = []
 
         this.msgList = []

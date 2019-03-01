@@ -125,6 +125,7 @@ async function pick_main_info_from_msg(msg) {
 	localTime = Date.now()
 
 	if(MsgTypes.MSGTYPE_TEXT == msg.MsgType) {
+
 		return {
 			'Type': 'Text',
 			'Content': unesacpetext(msg.Content)
@@ -260,6 +261,38 @@ function default_handler(msg) {
 	console.log("[%s]%s -> %s : %s => %s", msgType, fromName, toName, content, notifyName)
 }
 
+function get_chatroom_user(chatroom, username) {
+	logger.debug('get_chatroom_user:', chatroom, username)
+	idx = util.search_dict_list(chatroom.MemberList, 'UserName', username)
+	return chatroom.MemberList[idx] || {}
+}
+
+function fill_chatroom_user(fromType,fromUser,toType,toUser,msgToProcess) {
+	logger.debug('fill_chatroom_user,', fromType,fromUser,toType,toUser,msgToProcess)
+
+	if (toType == Config.USER_TYPE_CHATROOM) {
+		msgToProcess.ChatRoomUser = this.get_chatroom_user(toUser, this.get_myname())
+	} else if (fromType == Config.USER_TYPE_CHATROOM && msgToProcess['Type'] == 'Text') {
+		res = /(@[0-9a-z]*?):<br\/>(.*)$/.exec(msgToProcess.Content)
+		if (res) {
+			myChatroomUser = this.get_chatroom_user(fromUser, this.get_myname())
+			myDisplayName = myChatroomUser.DisplayName != '' ? myChatroomUser.DisplayName
+															: this.get_mynickname()
+			AtTag = '@'+ myDisplayName
+
+
+			msgToProcess.ChatRoomUser = this.get_chatroom_user(fromUser, res[1])
+			msgToProcess.Content = res[2]
+			
+			msgToProcess.IsAtMe = msgToProcess.Content.indexOf(AtTag + String.fromCodePoint('0x2005')) >= 0
+							   || msgToProcess.Content.indexOf(AtTag + ' ') >= 0
+							   || msgToProcess.Content.endsWith(AtTag)
+		} else {
+			logger.warn("fill_chatroom_user : can't parse cotent ", msgToProcess.Content)
+		}
+	}
+}
+
 async function produce_msg(msgList) {
 	logger.debug("produce_msg :", msgList)
 
@@ -278,13 +311,18 @@ async function produce_msg(msgList) {
 		}
 
 		let msgToProcess = await this.pick_main_info_from_msg(msg)
+		this.fill_chatroom_user(fromType,fromUser,toType,toUser,msgToProcess)
 		logger.debug("msgToProcess :", msgToProcess)
 
-		msgToProcess.From = fromUser
-		msgToProcess.To = toUser
 		msgToProcess.NotifyUsers = notifyUsers
 		msgToProcess.FromType = fromType,
 		msgToProcess.OrigMsg = msg
+		msgToProcess.From = fromUser
+		msgToProcess.To = toUser
+		if(this.get_myname()==fromUser.UserName) {
+			msgToProcess.From = toUser
+			msgToProcess.To = fromUser
+		}
 		
 		this.default_handler(msgToProcess)
 		if(typeof(MessageHandler[msg.MsgType]) == 'function'){
@@ -314,6 +352,8 @@ module.exports.Register =  function(core) {
 	core.get_download_fn = get_download_fn
 	core.get_download_slave_fn = get_download_slave_fn
 	core.produce_msg = produce_msg
+	core.fill_chatroom_user = fill_chatroom_user
+	core.get_chatroom_user = get_chatroom_user
 }
 
 module.exports.MessageHandler = MessageHandler

@@ -213,6 +213,7 @@ function pickupDifferentInitContact(contactList) {
     }
 }
 
+
 function get_myname() {
 	return this.loginInfo['User']['UserName']
 }
@@ -369,6 +370,9 @@ async function get_contact(seq = 0, memberList = []) {
 	    			return self.get_contact(nextSeq,memberList)
 	    		}
 	    		pickupDifferentTotalMember.call(self, memberList);
+	    		self.memberList = self.memberList.concat(self.init_memberList)
+	    		self.chatroomList = self.chatroomList.concat(self.init_chatroomList)
+	    		self.mpList = self.mpList.concat(self.init_mpList)
 	    		return true
 	    	}
 	    	return false
@@ -534,17 +538,17 @@ function find_user(userName) {
 	logger.debug("find_user :", userName)
 	idx = util.search_dict_list(this.memberList, 'UserName', userName)
 	if(idx >= 0){
-		return ['friend',this.memberList[idx]]
+		return [Config.USER_TYPE_FRIEND,this.memberList[idx]]
 	}
 
 	idx = util.search_dict_list(this.mpList, 'UserName', userName)
 	if(idx >= 0){
-		return ['mp',this.mpList[idx]]
+		return [Config.USER_TYPE_MP,this.mpList[idx]]
 	}	
 
 	idx = util.search_dict_list(this.chatroomList, 'UserName', userName)
 	if(idx >= 0){
-		return ['chatroom',this.chatroomList[idx]]
+		return [Config.USER_TYPE_CHATROOM,this.chatroomList[idx]]
 	}
 
 	return ['',{}]
