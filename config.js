@@ -32,6 +32,7 @@ module.exports = {
 	},
 	USER_TYPE_FRIEND: 'friend',
 	USER_TYPE_MP: 'mp',
-	USER_TYPE_CHATROOM: 'chatroom'
+	USER_TYPE_CHATROOM: 'chatroom',
+	USER_TYPE_SELF: 'self'
 
 }

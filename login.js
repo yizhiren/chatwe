@@ -258,7 +258,7 @@ async function web_init() {
 
 		    self.loginInfo['InviteStartCount'] = resp['InviteStartCount']
 		    self.loginInfo['User'] = resp['User']
-		    self.memberList.push(self.loginInfo['User'])
+		    //self.memberList.push(self.loginInfo['User'])
 		    self.loginInfo['SyncKey'] = resp['SyncKey']
 			synckey = ''
 		    for (let key in resp['SyncKey']['List']) {
@@ -536,6 +536,11 @@ function update_contact(contacts) {
 
 function find_user(userName) {
 	logger.debug("find_user :", userName)
+
+	if(userName == this.loginInfo['User'].UserName) {
+		return [Config.USER_TYPE_SELF, this.loginInfo['User']]
+	}
+	
 	idx = util.search_dict_list(this.memberList, 'UserName', userName)
 	if(idx >= 0){
 		return [Config.USER_TYPE_FRIEND,this.memberList[idx]]

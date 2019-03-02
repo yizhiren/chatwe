@@ -319,8 +319,9 @@ async function produce_msg(msgList) {
 		msgToProcess.OrigMsg = msg
 		msgToProcess.From = fromUser
 		msgToProcess.To = toUser
-		if(this.get_myname()==fromUser.UserName) {
+		if('filehelper'==msg.ToUserName) {
 			msgToProcess.From = toUser
+			msgToProcess.FromType = toType
 			msgToProcess.To = fromUser
 		}
 		

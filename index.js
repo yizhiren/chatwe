@@ -86,13 +86,17 @@ core.registerTextHandler(async function(msg){
 	}
 
 	if (msg.FromType == 'chatroom' && msg.IsAtMe){
-		console.log()
 		userInRoom = msg.ChatRoomUser
 		await this.reply_file(msg, 'resource/1.gif')
 		replyContent = `[托管中]${userInRoom.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
 		let issucc = await this.reply(msg,replyContent)
 		console.log('Reply ' + (issucc?'OK':'FAIL'))
 		return issucc
+	}
+
+	if (msg.FromType == 'self') {
+		console.log('I Sent:', msg)
+		return true
 	}
 
 
