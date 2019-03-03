@@ -177,7 +177,7 @@ async function get_QRuuid() {
 	        regx = /window.QRLogin.code = (\d+); window.QRLogin.uuid = "(\S+?)";/
 		    data = regx.exec(resp)
 		    if (data && data[1] == '200') {
-		    	logger.info('uuid =',data[2])
+		    	logger.debug('uuid =',data[2])
 		        return data[2]
 		    } else {
 		    	return ''
@@ -207,7 +207,7 @@ function pickupDifferentInitContact(contactList) {
         } else if('weixin' == item['UserName'] || 'filehelper' == item['UserName']){
         	this.init_memberList.push(item)
         } else {
-        	logger.info('unknow contact:', item)
+        	logger.warn('unknow contact:', item)
         }
     }
 }
@@ -334,7 +334,7 @@ function pickupDifferentTotalMember(memberList) {
         } else if('weixin' == item['UserName'] || 'filehelper' == item['UserName']){
         	this.memberList.push(item)
         } else {
-        	logger.info('unknow member:', item)
+        	logger.warn('unknow member:', item)
         }
     }
 }
@@ -505,24 +505,24 @@ function update_contact(contacts) {
 		userName = contact.UserName
 		idx = util.search_dict_list(this.memberList, 'UserName', userName)
 		if(idx >= 0){
-			logger.info('old:',this.memberList[idx])
-			logger.info('new:',contact)
+			logger.debug('old:',this.memberList[idx])
+			logger.debug('new:',contact)
 			this.memberList[idx] = contact
 			continue
 		}
 
 		idx = util.search_dict_list(this.mpList, 'UserName', userName)
 		if(idx >= 0){
-			logger.info('old:',this.mpList[idx])
-			logger.info('new:',contact)
+			logger.debug('old:',this.mpList[idx])
+			logger.debug('new:',contact)
 			this.mpList[idx] = contact
 			continue
 		}
 
 		idx = util.search_dict_list(this.chatroomList, 'UserName', userName)
 		if(idx >= 0){
-			logger.info('old:',this.chatroomList[idx])
-			logger.info('new:',contact)
+			logger.debug('old:',this.chatroomList[idx])
+			logger.debug('new:',contact)
 			this.chatroomList[idx] = contact
 			continue
 		}
@@ -564,7 +564,7 @@ async function loop_receiving() {
 	while(this.isLogined) {
 		try{
 			count = await this.sync_check()
-			logger.info("selector:", count)
+			logger.debug("selector:", count)
 			if (count < 0) {
 				this.isLogined = false
 			} else if (count == 0) {
