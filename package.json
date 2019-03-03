@@ -1,6 +1,6 @@
 {
   "name": "chatwe",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "this is a wechat client sdk. using the protocol of web wechat.",
   "main": "index.js",
   "scripts": {

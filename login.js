@@ -8,6 +8,7 @@ let util = require('./utils')
 let unesacpetext = require('unescape');
 let fs = require('fs')
 let MsgTypes = Config.MSG_TYPES
+let UserTypes = Config.USER_TYPES
 let MessageHandler = require('./msghandler').MessageHandler
 
 
@@ -537,22 +538,22 @@ function find_user(userName) {
 	logger.debug("find_user :", userName)
 
 	if(userName == this.loginInfo['User'].UserName) {
-		return [Config.USER_TYPE_SELF, this.loginInfo['User']]
+		return [UserTypes.USER_TYPE_SELF, this.loginInfo['User']]
 	}
 	
 	idx = util.search_dict_list(this.memberList, 'UserName', userName)
 	if(idx >= 0){
-		return [Config.USER_TYPE_FRIEND,this.memberList[idx]]
+		return [UserTypes.USER_TYPE_FRIEND,this.memberList[idx]]
 	}
 
 	idx = util.search_dict_list(this.mpList, 'UserName', userName)
 	if(idx >= 0){
-		return [Config.USER_TYPE_MP,this.mpList[idx]]
+		return [UserTypes.USER_TYPE_MP,this.mpList[idx]]
 	}	
 
 	idx = util.search_dict_list(this.chatroomList, 'UserName', userName)
 	if(idx >= 0){
-		return [Config.USER_TYPE_CHATROOM,this.chatroomList[idx]]
+		return [UserTypes.USER_TYPE_CHATROOM,this.chatroomList[idx]]
 	}
 
 	return ['',{}]

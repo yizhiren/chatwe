@@ -6,6 +6,8 @@ let fs = require('fs')
 let url = require('url');
 let Config = require('./config')
 let MsgTypes = Config.MSG_TYPES
+let UserTypes = Config.USER_TYPES
+let StatusNotifyCodes = Config.StatusNotifyCodes
 
 
 MessageHandler={}
@@ -199,7 +201,7 @@ async function pick_main_info_from_msg(msg) {
 	if(MsgTypes.MSGTYPE_STATUSNOTIFY == msg.MsgType) {
 		return {
 			'Type': 'Status',
-			'Content': msg['Status']
+			'Content': StatusNotifyCodes[msg.StatusNotifyCode]
 		}
 	}
 
@@ -272,9 +274,9 @@ function get_chatroom_user(chatroom, username) {
 function fill_chatroom_user(fromType,fromUser,toType,toUser,msgToProcess) {
 	logger.debug('fill_chatroom_user,', fromType,fromUser,toType,toUser,msgToProcess)
 
-	if (toType == Config.USER_TYPE_CHATROOM) {
+	if (toType == UserTypes.USER_TYPE_CHATROOM) {
 		msgToProcess.ChatRoomUser = this.get_chatroom_user(toUser, this.get_myname())
-	} else if (fromType == Config.USER_TYPE_CHATROOM && msgToProcess['Type'] == 'Text') {
+	} else if (fromType == UserTypes.USER_TYPE_CHATROOM && msgToProcess['Type'] == 'Text') {
 		res = /(@[0-9a-z]*?):<br\/>(.*)$/.exec(msgToProcess.Content)
 		if (res) {
 			myChatroomUser = this.get_chatroom_user(fromUser, this.get_myname())
