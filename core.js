@@ -2,7 +2,8 @@ let rp = require('request-promise');
 let r = require('request');
 let Config = require('./config')
 let FileCookieStore = require('tough-cookie-filestore-fix');
-let fs = require('fs')
+let fse = require('fs-extra')
+let logsystem = require('./logsystem')
 let Login = require('./login')
 let Messages = require('./messages')
 let MsgHandler = require('./msghandler')
@@ -25,13 +26,15 @@ class Core{
         this.init_mpList = []
         this.init_chatroomList = []
 
+        this.logsystem = logsystem
+
     }
 
     constructor(){
         this.init()
-
+        fse.ensureDirSync('cache')
         this.cookieFile = 'cookie/wxcookie' + instNum + '.json'
-        fs.readFileSync(this.cookieFile,{flag:'a+'})
+        fse.ensureFileSync(this.cookieFile)
         this.cookieStore = new FileCookieStore(this.cookieFile)
         this.cookieJar = rp.jar(this.cookieStore)
         this.s = rp.defaults({
@@ -52,6 +55,7 @@ class Core{
 
         instNum ++
     }
+
 
 }
 

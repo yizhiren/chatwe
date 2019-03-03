@@ -1,17 +1,18 @@
 {
   "name": "chatwe",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.2",
+  "description": "this is a wechat client sdk. using the protocol of web wechat.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "yizhiren",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "deepcopy": "^1.0.0",
+    "fs-extra": "^7.0.1",
     "log4js": "^4.0.0",
     "md5-file": "^4.0.0",
     "mime-types": "^2.1.22",
@@ -20,5 +21,14 @@
     "request-promise": "^4.2.2",
     "tough-cookie-filestore-fix": "^1.0.0",
     "unescape": "^1.0.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yizhiren/chatwe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yizhiren/chatwe/issues"
+  },
+  "homepage": "https://github.com/yizhiren/chatwe#readme"
 }

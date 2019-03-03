@@ -12,7 +12,6 @@ let MessageHandler = require('./msghandler').MessageHandler
 
 
 async function wait_one_second() {
-
   return new Promise(resolve => setTimeout(resolve, 1000));
 }
 

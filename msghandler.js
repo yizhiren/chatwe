@@ -10,43 +10,43 @@ let MsgTypes = Config.MSG_TYPES
 
 MessageHandler={}
 
-function registerMessageHandler(type,handler){
+function register_message_handler(type,handler){
 	MessageHandler[type] = handler
 }
 
-function registerTextHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_TEXT, handler)
+function register_text_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_TEXT, handler)
 }
 
-function registerPictureHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_IMAGE, handler)
-	registerMessageHandler(MsgTypes.MSGTYPE_EMOTICON, handler)
+function register_picture_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_IMAGE, handler)
+	register_message_handler(MsgTypes.MSGTYPE_EMOTICON, handler)
 }
 
-function registerVoiceHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_VOICE, handler)
+function register_voice_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_VOICE, handler)
 }
 
-function registerVideoHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_VIDEO, handler)
-	registerMessageHandler(MsgTypes.MSGTYPE_MICROVIDEO, handler)
+function register_video_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_VIDEO, handler)
+	register_message_handler(MsgTypes.MSGTYPE_MICROVIDEO, handler)
 }
 
-function registerSysHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_SYS, handler)
-	registerMessageHandler(MsgTypes.MSGTYPE_RECALLED, handler)
+function register_sys_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_SYS, handler)
+	register_message_handler(MsgTypes.MSGTYPE_RECALLED, handler)
 }
 
-function registerFriendHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_VERIFYMSG, handler)
+function register_friend_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_VERIFYMSG, handler)
 }
 
-function registerCardHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_SHARECARD, handler)
+function register_card_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_SHARECARD, handler)
 }
 
-function registerStatusHandler(handler){
-	registerMessageHandler(MsgTypes.MSGTYPE_STATUSNOTIFY, handler)
+function register_status_handler(handler){
+	register_message_handler(MsgTypes.MSGTYPE_STATUSNOTIFY, handler)
 }
 
 
@@ -340,13 +340,13 @@ async function produce_msg(msgList) {
 
 module.exports.Register =  function(core) {
 	core.default_handler = default_handler
-	core.registerTextHandler = registerTextHandler
-	core.registerPictureHandler = registerPictureHandler
-	core.registerVoiceHandler = registerVoiceHandler
-	core.registerVideoHandler = registerVideoHandler
-	core.registerSysHandler = registerSysHandler
-	core.registerFriendHandler = registerFriendHandler
-	core.registerCardHandler = registerCardHandler
+	core.register_text_handler = register_text_handler
+	core.register_picture_handler = register_picture_handler
+	core.register_voice_handler = register_voice_handler
+	core.register_video_handler = register_video_handler
+	core.register_sys_handler = register_sys_handler
+	core.register_friend_handler = register_friend_handler
+	core.register_card_handler = register_card_handler
 	core.pick_main_info_from_msg = pick_main_info_from_msg
 	core.get_image_download_fn = get_image_download_fn
 	core.get_emoticon_download_fn = get_emoticon_download_fn
