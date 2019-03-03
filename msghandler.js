@@ -137,7 +137,7 @@ async function pick_main_info_from_msg(msg) {
 	}
 
 
-	previewFile = __dirname + '/cache/' + localTime + '_slave.png'
+	previewFile = 'cache/' + localTime + '_slave.png'
 	if (MsgTypes.MSGTYPE_IMAGE == msg.MsgType ||
 		MsgTypes.MSGTYPE_VIDEO == msg.MsgType ||
 		MsgTypes.MSGTYPE_MICROVIDEO == msg.MsgType) {
@@ -147,7 +147,7 @@ async function pick_main_info_from_msg(msg) {
 	}
 
 	if(MsgTypes.MSGTYPE_IMAGE == msg.MsgType) {
-		let filename = __dirname + '/cache/' + localTime + '.png'
+		let filename = 'cache/' + localTime + '.png'
 		return {
 			'Type': 'Image',
 			'Content': filename,
@@ -158,7 +158,7 @@ async function pick_main_info_from_msg(msg) {
 
 
 	if(MsgTypes.MSGTYPE_EMOTICON == msg.MsgType) {
-		let filename = __dirname + '/cache/' + localTime + '.gif'
+		let filename = 'cache/' + localTime + '.gif'
 		return {
 			'Type': 'Gif',
 			'Content': filename,
@@ -167,7 +167,7 @@ async function pick_main_info_from_msg(msg) {
 	}
 
 	if(MsgTypes.MSGTYPE_VOICE == msg.MsgType) {
-		let filename = __dirname + '/cache/' + localTime + '.mp3'
+		let filename = 'cache/' + localTime + '.mp3'
 		return {
 			'Type': 'Voice',
 			'Content': filename,
@@ -177,7 +177,7 @@ async function pick_main_info_from_msg(msg) {
 
 	if(MsgTypes.MSGTYPE_VIDEO == msg.MsgType ||
 		MsgTypes.MSGTYPE_MICROVIDEO == msg.MsgType) {
-		let filename = __dirname + '/cache/' + localTime + '.mp4'
+		let filename = 'cache/' + localTime + '.mp4'
 		return {
 			'Type': 'Video',
 			'Content': filename,
