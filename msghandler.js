@@ -87,10 +87,12 @@ function get_download_fn(filename,msgId,interface,headers={}) {
 
 		logger.debug(interface, ', option :', options)
 
-		return new Promise(resolve =>
-		    self.s0(options)
-		      .pipe(fs.createWriteStream(filename,{autoClose:true}))
-		      .on('finish', resolve));
+		return new Promise(
+			(resolve,reject) => self.s0(options)
+				.pipe(fs.createWriteStream(filename,{autoClose:true}))
+				.on('finish', resolve)
+				.on('error', reject)
+		);
 
 	}
 }

@@ -63,6 +63,16 @@ async function handlerControl(msg) {
 	return issucc
 }
 
+function delayRevoke(userName, msgResp) {
+	console.log('delayRevoke,', userName, msgResp)
+	self = this
+	setTimeout(async function(){
+		console.log('execute delayRevoke,', userName, msgResp)
+		resp = await self.revoke(userName, msgResp)
+		console.log('Revoke ' + (resp?'OK':'FAIL'))
+	},10000)
+}
+
 core.registerTextHandler(async function(msg){
 	fromUser = msg.From
 	toUser = msg.To
@@ -78,20 +88,29 @@ core.registerTextHandler(async function(msg){
 	}
 
 	if (msg.FromType == 'friend') {
-		await this.reply_file(msg, 'resource/1.gif')
-		replyContent = `[托管中]${fromUser.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
-		let issucc = await this.reply(msg,replyContent)
-		console.log('Reply ' + (issucc?'OK':'FAIL'))
-		return issucc
+		let respGif = await this.reply_file(msg, 'resource/1.gif')
+		replyContent = `[消息将自动撤回]${fromUser.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
+		let resp = await this.reply(msg,replyContent)
+		console.log('Reply ' + (resp?'OK':'FAIL'))
+		if(resp) {
+			delayRevoke.call(this, fromUser.UserName, respGif)
+			delayRevoke.call(this, fromUser.UserName, resp)
+		}
+		return resp
 	}
 
 	if (msg.FromType == 'chatroom' && msg.IsAtMe){
 		userInRoom = msg.ChatRoomUser
-		await this.reply_file(msg, 'resource/1.gif')
-		replyContent = `[托管中]${userInRoom.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
-		let issucc = await this.reply(msg,replyContent)
-		console.log('Reply ' + (issucc?'OK':'FAIL'))
-		return issucc
+		let respGif = await this.reply_file(msg, 'resource/1.gif')
+		replyContent = `[消息将自动撤回]${userInRoom.NickName}您好,${this.get_mynickname()}正在赶来，急事请电话15858178942.`
+		let resp = await this.reply(msg,replyContent)
+		console.log('Reply ' + (resp?'OK':'FAIL'))
+		if(resp) {
+			delayRevoke.call(this, fromUser.UserName, respGif)
+			delayRevoke.call(this, fromUser.UserName, resp)
+		}
+
+		return resp
 	}
 
 	if (msg.FromType == 'self') {

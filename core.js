@@ -16,7 +16,7 @@ class Core{
         this.loginInfo = {}
 
         this.uuid = ''
-        
+
         this.memberList = []
         this.mpList = []
         this.chatroomList = []
@@ -25,10 +25,6 @@ class Core{
         this.init_mpList = []
         this.init_chatroomList = []
 
-        //
-        this.init_subscribeList = []
-
-        this.msgList = []
     }
 
     constructor(){

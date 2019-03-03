@@ -40,7 +40,7 @@ async function reply_to(userName, content) {
 	    	logger.debug('reply resp :', resp)
 	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
 	    	logger.debug('reply issucc :', issucc)
-	    	return issucc
+	    	return resp
 	    })
 	    .catch(function (err) {
 	        logger.warn(err)
@@ -206,7 +206,7 @@ async function send_image_to(userName, mediaId) {
 	    	logger.debug('send_image_to resp :', resp)
 	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
 	    	logger.debug('send_image_to issucc :', issucc)
-	    	return issucc
+	    	return resp
 	    })
 	    .catch(function (err) {
 	        logger.warn(err)
@@ -247,7 +247,7 @@ async function send_emoticon_to(userName, mediaId) {
 	    	logger.debug('send_emoticon_to resp :', resp)
 	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
 	    	logger.debug('send_emoticon_to issucc :', issucc)
-	    	return issucc
+	    	return resp
 	    })
 	    .catch(function (err) {
 	        logger.warn(err)
@@ -289,7 +289,7 @@ async function send_video_to(userName, mediaId) {
 	    	logger.debug('send_video_to resp :', resp)
 	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
 	    	logger.debug('send_video_to issucc :', issucc)
-	    	return issucc
+	    	return resp
 	    })
 	    .catch(function (err) {
 	        logger.warn(err)
@@ -346,7 +346,7 @@ async function send_file_to(userName, mediaId, filename) {
 	    	logger.debug('send_file_to resp :', resp)
 	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
 	    	logger.debug('send_file_to issucc :', issucc)
-	    	return issucc
+	    	return resp
 	    })
 	    .catch(function (err) {
 	        logger.warn(err)
@@ -383,6 +383,40 @@ async function reply_file(msg, filename) {
 }
 
 
+async function revoke(userName, msgResp) {
+	logger.debug('revoke()')
+
+	msgId = msgResp.MsgID
+	localId = msgResp.LocalID
+
+	var options = {
+	    uri: this.loginInfo['url'] + '/webwxrevokemsg',
+    	body : {
+	        'BaseRequest': this.loginInfo['BaseRequest'],
+	        'ClientMsgId': localId,
+	        'SvrMsgId': msgId,
+	        'ToUserName': userName
+	    },
+    	json: true,
+    	method: 'POST'
+	}
+
+	logger.debug('revoke, option :', options)
+
+	return this.s(options)
+	    .then(function (resp) {
+	    	logger.debug('revoke resp :', resp)
+	    	issucc = resp && resp.BaseResponse && resp.BaseResponse.Ret == 0
+	    	logger.debug('revoke issucc :', issucc)
+	    	return resp
+	    })
+	    .catch(function (err) {
+	        logger.warn(err)
+	        return false
+	    });
+}
+
+
 module.exports.Register =  function(core) {
 	core.reply = reply
 	core.reply_to = reply_to
@@ -394,5 +428,6 @@ module.exports.Register =  function(core) {
 	core.send_emoticon_to = send_emoticon_to
 	core.send_image_to = send_image_to
 	core.send_file_to = send_file_to
+	core.revoke = revoke
 }
 

@@ -266,7 +266,7 @@ async function web_init() {
 		        synckey += item['Key'] + '_' + item['Val'] + '|'
 		    }
 		    self.loginInfo['synckey'] = synckey.substr(0, synckey.length - 1)
-		    self.init_subscribeList = resp.MPSubscribeMsgList
+		    //self.init_subscribeList = resp.MPSubscribeMsgList
 		    contactList = resp['ContactList'] || []
 		    pickupDifferentInitContact.call(self, contactList)
 
@@ -578,7 +578,6 @@ async function loop_receiving() {
 					this.update_contact(modContactList)
 
 					msgList = messages.AddMsgList
-					this.msgList.concat(msgList)
 					await this.produce_msg(msgList)
 				}
 			}
