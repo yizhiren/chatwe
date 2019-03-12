@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "standard --verbose | snazzy",
     "format": "standard --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "taper test/test-*.js"
   },
   "keywords": [],
   "author": "yizhiren",
@@ -27,7 +27,8 @@
   "devDependencies": {
     "snazzy": "^8.0.0",
     "standard": "^12.0.1",
-    "tape": "^4.10.1"
+    "tape": "^4.10.1",
+    "taper": "^0.5.0"
   },
   "repository": {
     "type": "git",

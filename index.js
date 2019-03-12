@@ -1,3 +1,3 @@
-let Core = require('./core')
+let Core = require('./lib/core')
 
 module.exports = Core
