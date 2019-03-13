@@ -1,15 +1,15 @@
 # chatwe
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Build Status](https://travis-ci.org/yizhiren/chatwe.svg?branch=master)](https://travis-ci.org/yizhiren/chatwe)        
 this is a personal wechat client sdk. using the protocol of web wechat.
 
 ## what can this do
 you can use this to :
- > auto manage wechat friend;
- > auto manage chatroom message;
- > auto reply specified message;
- > made personal wechat a talking robot;
- > use personal wechat a controller to control other machine;
+ - auto manage wechat friend;
+ - auto manage chatroom message;
+ - auto reply specified message;
+ - made personal wechat a talking robot;
+ - use personal wechat a controller to control other machine;
 
 ## installation
 
