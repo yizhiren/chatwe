@@ -13,20 +13,11 @@ Config.PUSHLOGIN_BASE_URL = 'http://127.0.0.1:12345'
 var wechat = new Wechat()
 wechat.setLogging('info')
 
-wechat.get_loginInfo = function () {
-  return this.loginInfo
-}
-
-wechat.get_loginInfo()['pass_ticket'] = '111'
-wechat.get_loginInfo()['User'] = {}
-wechat.get_loginInfo()['url'] = Config.BASE_URL
-let ret = '{"BaseResponse":{"Ret":0}}'
-
+let ret = ''
 var s = http.createServer(function (req, res) {
-  logger.debug(req.url)
   res.statusCode = 200
-  if (req.url.startsWith('/webwxstatusnotify?pass_ticket=111')) {
-    // res.writeHead(200,{'Content-Type':'application/json'});
+  logger.debug(req.url)
+  if (req.url.startsWith('/synccheck')) {
     res.end(ret)
   }
 })
@@ -41,15 +32,25 @@ test('setup', function (t) {
   })
 })
 
-test('wechat showMobileLogin 1', async function (t) {
-  let succ = await wechat.showMobileLogin()
-  t.equal(succ, true)
+test('wechat synccheck 1', async function (t) {
+  wechat.loginInfo['syncUrl'] = Config.BASE_URL
+  ret = 'window.synccheck={retcode:"0",selector:"0"}'
+  let cnt = await wechat.syncCheck()
+  t.equal(0, cnt)
 })
 
-test('wechat showMobileLogin 2', async function (t) {
-  ret = '{}'
-  let succ = await wechat.showMobileLogin()
-  t.equal(succ, false)
+test('wechat synccheck 2', async function (t) {
+  wechat.loginInfo['syncUrl'] = Config.BASE_URL
+  ret = 'window.synccheck={retcode:"0",selector:"3"}'
+  let cnt = await wechat.syncCheck()
+  t.equal(3, cnt)
+})
+
+test('wechat synccheck 3', async function (t) {
+  wechat.loginInfo['syncUrl'] = Config.BASE_URL
+  ret = 'window.synccheck={retcode:"1",selector:"0"}'
+  let cnt = await wechat.syncCheck()
+  t.equal(-1, cnt)
 })
 
 test('cleanup', function (t) {

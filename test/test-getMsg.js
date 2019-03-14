@@ -17,30 +17,29 @@ wechat.get_init = function () {
   return [this.init_memberList, this.init_mpList, this.init_chatroomList]
 }
 
+let ret = 0
 var s = http.createServer(function (req, res) {
   res.statusCode = 200
   logger.debug(req.url)
-  if (req.url.startsWith('/webwxinit')) {
+  if (req.url.startsWith('/webwxsync')) {
     res.end(JSON.stringify({
-      InviteStartCount: 3,
-      User: {},
+      'BaseResponse': { 'Ret': ret },
       SyncKey: {
+        List: [
+          { Key: '91', Val: '2' },
+          { Key: '911', Val: '22' },
+          { Key: '9111', Val: '222' },
+          { Key: '91111', Val: '2222' }
+        ]
+      },
+      SyncCheckKey: {
         List: [
           { Key: '1', Val: '2' },
           { Key: '11', Val: '22' },
           { Key: '111', Val: '222' },
           { Key: '1111', Val: '2222' }
         ]
-      },
-      ContactList: [
-        { Sex: 1 },
-        { Sex: 0, UserName: '@@d' },
-        { Sex: 0, UserName: '@x', VerifyFlag: 8 },
-        { Sex: 0, UserName: '@c', VerifyFlag: 8 },
-        { Sex: 0, UserName: '@d', VerifyFlag: 1 },
-        { Sex: 0, UserName: 'weixin' },
-        { Sex: 0, UserName: 'filehelper' }
-      ]
+      }
     }))
   }
 })
@@ -55,14 +54,20 @@ test('setup', function (t) {
   })
 })
 
-test('wechat webInit 1', async function (t) {
+test('wechat webwxsync 1', async function (t) {
   wechat.loginInfo['url'] = Config.BASE_URL
-  await wechat.webInit()
+  ret = 0
+  let resp = await wechat.getMsg()
   t.equal(wechat.loginInfo['synckey'], '1_2|11_22|111_222|1111_2222')
-  let [member, mp, room] = wechat.get_init()
-  t.equal(1, room.length)
-  t.equal(4, member.length)
-  t.equal(2, mp.length)
+  t.equal(wechat.loginInfo['SyncKey']['List'][0].Key, '91')
+  t.equal(0, resp.BaseResponse.Ret)
+})
+
+test('wechat webwxsync 2', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  ret = 1
+  let resp = await wechat.getMsg()
+  t.equal(null, resp)
 })
 
 test('cleanup', function (t) {

@@ -13,21 +13,11 @@ Config.PUSHLOGIN_BASE_URL = 'http://127.0.0.1:12345'
 var wechat = new Wechat()
 wechat.setLogging('info')
 
-wechat.get_loginInfo = function () {
-  return this.loginInfo
-}
-
-wechat.get_loginInfo()['pass_ticket'] = '111'
-wechat.get_loginInfo()['User'] = {}
-wechat.get_loginInfo()['url'] = Config.BASE_URL
-let ret = '{"BaseResponse":{"Ret":0}}'
-
 var s = http.createServer(function (req, res) {
-  logger.debug(req.url)
   res.statusCode = 200
-  if (req.url.startsWith('/webwxstatusnotify?pass_ticket=111')) {
-    // res.writeHead(200,{'Content-Type':'application/json'});
-    res.end(ret)
+  logger.debug(req.url)
+  if (req.url.startsWith('/webwxlogout')) {
+    res.end('')
   }
 })
 
@@ -41,15 +31,12 @@ test('setup', function (t) {
   })
 })
 
-test('wechat showMobileLogin 1', async function (t) {
-  let succ = await wechat.showMobileLogin()
-  t.equal(succ, true)
-})
+test('wechat logout 1', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.memberList.push({})
+  await wechat.logout()
 
-test('wechat showMobileLogin 2', async function (t) {
-  ret = '{}'
-  let succ = await wechat.showMobileLogin()
-  t.equal(succ, false)
+  t.equal(0, wechat.memberList.length)
 })
 
 test('cleanup', function (t) {

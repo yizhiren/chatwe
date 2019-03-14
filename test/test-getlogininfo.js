@@ -1,5 +1,7 @@
 'use strict'
 
+let log4js = require('log4js')
+let logger = log4js.getLogger('chatwe')
 var http = require('http')
 var Wechat = require('../index')
 var tape = require('tape')
@@ -9,7 +11,7 @@ let Config = require('../lib/config')
 Config.BASE_URL = 'http://127.0.0.1:12345'
 Config.PUSHLOGIN_BASE_URL = 'http://127.0.0.1:12345'
 var wechat = new Wechat()
-wechat.setLogging('debug')
+wechat.setLogging('info')
 
 wechat.get_loginInfo = function () {
   return this.loginInfo
@@ -17,7 +19,7 @@ wechat.get_loginInfo = function () {
 
 var s = http.createServer(function (req, res) {
   res.statusCode = 200
-  console.log(req.url)
+  logger.debug(req.url)
   if (req.url === '/logininfo?a=b&fun=new&version=v2') {
     res.end('<B><ret>0</ret><skey>2222</skey><wxsid>3333</wxsid><wxuin>4444</wxuin><pass_ticket>5555</pass_ticket></B>')
   }

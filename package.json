@@ -6,7 +6,9 @@
   "scripts": {
     "lint": "standard --verbose | snazzy",
     "format": "standard --fix",
-    "test": "taper test/test-*.js"
+    "test": "taper test/test-*.js",
+    "coverage": "nyc tape test/test-*.js",
+    "submit": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
   "author": "yizhiren",
@@ -25,6 +27,9 @@
     "unescape": "^1.0.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.3",
+    "istanbul": "^0.4.5",
+    "nyc": "^13.3.0",
     "snazzy": "^8.0.0",
     "standard": "^12.0.1",
     "tape": "^4.10.1",
