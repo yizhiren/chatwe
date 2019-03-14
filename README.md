@@ -1,6 +1,6 @@
 # chatwe
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Build Status](https://travis-ci.org/yizhiren/chatwe.svg?branch=master)](https://travis-ci.org/yizhiren/chatwe)        
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Build Status](https://travis-ci.org/yizhiren/chatwe.svg?branch=master)](https://travis-ci.org/yizhiren/chatwe) [![Coverage Status](https://coveralls.io/repos/github/yizhiren/chatwe/badge.svg?branch=feature_test)](https://coveralls.io/github/yizhiren/chatwe?branch=master)        
 this is a personal wechat client sdk. using the protocol of web wechat.
 
 ## what can this do
