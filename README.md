@@ -1,11 +1,12 @@
-# chatwe
+# chatwe - Simple Wechat Client
 
-[![npm package](https://nodei.co/npm/chatwe.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/chatwe/)
+[![npm package](https://nodei.co/npm/chatwe.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/chatwe/)     
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Dependency Status](https://img.shields.io/david/yizhiren/chatwe.svg?style=flat-square)](https://david-dm.org/yizhiren/chatwe)
-[![Build Status](https://travis-ci.org/yizhiren/chatwe.svg?branch=master)](https://travis-ci.org/yizhiren/chatwe) 
+[![Build Status](https://travis-ci.org/yizhiren/chatwe.svg?branch=master)](https://travis-ci.org/yizhiren/chatwe)
 [![Coverage Status](https://coveralls.io/repos/github/yizhiren/chatwe/badge.svg)](https://coveralls.io/github/yizhiren/chatwe)     
-this is a personal wechat client sdk. using the protocol of web wechat.
+
+this is a personal wechat client. using the protocol of web wechat.
 
 ## what can this do
 you can use this to :
