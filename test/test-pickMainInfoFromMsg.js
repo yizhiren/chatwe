@@ -9,6 +9,7 @@ var _test = require('tape-promise').default
 var test = _test(tape)
 let Config = require('../lib/config')
 let MsgTypes = Config.MSG_TYPES
+let AppMsgTypes = Config.APPMSG_TYPES
 Config.BASE_URL = 'http://127.0.0.1:12345'
 Config.PUSHLOGIN_BASE_URL = 'http://127.0.0.1:12345'
 var wechat = new Wechat()
@@ -56,6 +57,89 @@ test('wechat pickMainInfoFromMsg MSGTYPE_TEXT', async function (t) {
   t.equal(resp.Content, 'ASD<>lg')
 })
 
+test('wechat pickMainInfoFromMsg MSGTYPE_TEXT.Map', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_TEXT,
+    Content: 'æ°¸æ—ºå®¶å›­å››åŒº(åŒ—äº¬å¸‚æµ·æ·€åŒºä¸°æ™ºä¸œè·¯):<br/>/cgi-bin/mmwebwx-bin/webwxgetpubliclinkimg?url=xxx&msgid=5390103377716754276&pictype=location',
+    Url: 'http://apis.map.qq.com/uri/v1/geocoder?coord=40.067356,116.257927'
+  })
+  t.equal(resp.Type, 'Map')
+  t.equal(true, resp.Content.startsWith('cache/'))
+  t.equal(true, resp.Content.endsWith('.png'))
+  t.equal(resp.Text, 'æ°¸æ—ºå®¶å›­å››åŒº(åŒ—äº¬å¸‚æµ·æ·€åŒºä¸°æ™ºä¸œè·¯)')
+  t.equal(resp.Url, 'http://apis.map.qq.com/uri/v1/geocoder?coord=40.067356,116.257927')
+})
+
+test('wechat pickMainInfoFromMsg MSGTYPE_VOIPINVITE', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_VOIPINVITE,
+    Content: 'ASD&lt;&gt;lg'
+  })
+  t.equal(resp.Type, 'Note')
+  t.equal(resp.Content, 'ASD<>lg')
+})
+
+test('wechat pickMainInfoFromMsg MSGTYPE_APP.APPMSGTYPE_ATTACH', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_APP,
+    AppMsgType: AppMsgTypes.APPMSGTYPE_ATTACH,
+    EncryFileName: 'aaa.xyz'
+  })
+  t.equal(resp.Type, 'File')
+  t.equal(true, resp.Content.startsWith('cache/'))
+  t.equal(true, resp.Content.endsWith('.xyz'))
+  t.equal('function', typeof (resp.Download))
+})
+
+test('wechat pickMainInfoFromMsg MSGTYPE_APP.APPMSGTYPE_EMOJI', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_APP,
+    AppMsgType: AppMsgTypes.APPMSGTYPE_EMOJI
+  })
+  t.equal(resp.Type, 'Image')
+  t.equal(true, resp.Content.startsWith('cache/'))
+  t.equal(true, resp.Content.endsWith('.gif'))
+  t.equal('function', typeof (resp.Download))
+})
+
+test('wechat pickMainInfoFromMsg MSGTYPE_APP.APPMSGTYPE_REALTIME_SHARE_LOCATION', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_APP,
+    AppMsgType: AppMsgTypes.APPMSGTYPE_REALTIME_SHARE_LOCATION,
+    EncryFileName: 'aaa.xyz'
+  })
+  t.equal(resp.Type, 'Note')
+  t.equal('aaa.xyz', resp.Content)
+})
+
+test('wechat pickMainInfoFromMsg MSGTYPE_APP.other', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_APP,
+    AppMsgType: 999,
+    Content: 'aaa.xyz'
+  })
+  t.equal(resp.Type, 'Note')
+  t.equal('aaa.xyz', resp.Content)
+})
+
 test('wechat pickMainInfoFromMsg MSGTYPE_IMAGE', async function (t) {
   wechat.loginInfo['url'] = Config.BASE_URL
   wechat.loginInfo['User'] = {}
@@ -78,7 +162,7 @@ test('wechat pickMainInfoFromMsg MSGTYPE_EMOTICON', async function (t) {
   let resp = await wechat.pickMainInfoFromMsg({
     MsgType: MsgTypes.MSGTYPE_EMOTICON
   })
-  t.equal(resp.Type, 'Gif')
+  t.equal(resp.Type, 'Image')
   t.equal(true, resp.Content.startsWith('cache/'))
   t.equal(true, resp.Content.endsWith('.gif'))
   t.equal('function', typeof (resp.Download))

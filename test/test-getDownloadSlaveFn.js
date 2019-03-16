@@ -23,6 +23,9 @@ var s = http.createServer(function (req, res) {
   if (req.url.startsWith('/webwxgetmsgimg')) {
     res.end(ret)
   }
+  if (req.url.startsWith('/webwxgetmedia')) {
+    res.end(ret)
+  }
   if (req.url.startsWith('/xyz')) {
     res.end(ret)
   }
@@ -74,6 +77,40 @@ test('wechat getDownloadFn 2', async function (t) {
   wechat.loginInfo['User'] = {}
   fname = '/tmp'
   let resp = await (wechat.getDownloadFn(fname, 111, 'xyz'))()
+  t.equal(resp, false)
+})
+
+test('wechat getAppMsgFileDownloadFn 1', async function (t) {
+  wechat.loginInfo['url'] = ''
+  wechat.loginInfo['fileUrl'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+  fname = '/tmp/a'
+  let resp = await (wechat.getAppMsgFileDownloadFn({}, fname))()
+  t.equal(resp, true)
+})
+
+test('wechat getAppMsgFileDownloadFn 2', async function (t) {
+  wechat.loginInfo['url'] = ''
+  wechat.loginInfo['fileUrl'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+  fname = '/tmp'
+  let resp = await (wechat.getAppMsgFileDownloadFn({}, fname))()
+  t.equal(resp, false)
+})
+
+test('wechat getMapPreviewDownloadFn 1', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+  fname = '/tmp/a'
+  let resp = await (wechat.getMapPreviewDownloadFn('/xyz', fname))()
+  t.equal(resp, true)
+})
+
+test('wechat getMapPreviewDownloadFn 2', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+  fname = '/tmp'
+  let resp = await (wechat.getMapPreviewDownloadFn('/xyz', fname))()
   t.equal(resp, false)
 })
 

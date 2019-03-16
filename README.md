@@ -79,10 +79,11 @@ what you need is execute it and scan qrcode in the console
  - × Reply Voice Message
  - √ Reply Other Document File
  - √ Reply ChatRoom Message
+ - √ Revoke Message
  - × Attach Session Status(Open/Close) in Message
  - × Create ChatRoom
  - × Manage Chatroom Member(add/delete)
- - × 50%+ UT Coverage
+ - √ 50%+ UT Coverage
  - × Plugin Support(AI/Robot plugin)
 
 ## License
