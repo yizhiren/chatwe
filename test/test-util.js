@@ -40,12 +40,13 @@ test('wechat checkFile 1', async function (t) {
   t.equal(util.checkFile(path.join(__dirname, '../index.js')), true)
   t.end()
 })
-
+/*
 test('wechat testConnect 1', async function (t) {
   let resp = await util.testConnect()
   t.equal(true, resp)
   t.end()
 })
+*/
 
 test('wechat emojiFormatter 1', async function (t) {
   let obj = { content: '<span class="emoji emoji1f64d"></span>' }
