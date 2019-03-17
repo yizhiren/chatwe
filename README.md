@@ -70,9 +70,10 @@ what you need is execute it and scan qrcode in the console
  - √ Register New Friend Message
  - √ Register User Card Message
  - √ Register Sys Message
- - × Register Other Document File Message
- - × Register Map Message
+ - √ Register Other Document File Message
+ - √ Register Map Message
  - √ Register Chatroom Message
+ - √ Register Status Message
  - √ Reply Text Message
  - √ Reply Image Message
  - √ Reply Video Message
@@ -80,10 +81,9 @@ what you need is execute it and scan qrcode in the console
  - √ Reply Other Document File
  - √ Reply ChatRoom Message
  - √ Revoke Message
- - × Attach Session Status(Open/Close) in Message
+ - √ 50%+ UT Coverage
  - × Create ChatRoom
  - × Manage Chatroom Member(add/delete)
- - √ 50%+ UT Coverage
  - × Plugin Support(AI/Robot plugin)
 
 ## License
