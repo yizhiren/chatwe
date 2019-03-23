@@ -77,13 +77,13 @@ what you need is execute it and scan qrcode in the console
  - √ Reply Text Message
  - √ Reply Image Message
  - √ Reply Video Message
- - × Reply Voice Message
+ - × Reply Voice Message                 [not support by web wechat]
  - √ Reply Other Document File
  - √ Reply ChatRoom Message
  - √ Revoke Message
  - √ 50%+ UT Coverage
- - × Create ChatRoom
- - × Manage Chatroom Member(add/delete)
+ - × Create Chatroom                     [not support by web wechat]
+ - × Manage Chatroom Member(add/delete)  [not support by web wechat]
  - × Plugin Support(AI/Robot plugin)
 
 ## License
