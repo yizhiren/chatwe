@@ -55,9 +55,9 @@ what you need is execute it and scan qrcode in the console
 █ █▄▄▄█ █  ▄█ ▀▄█▀█ ▄ ██▄▀▀▄▀▄█
 █▄▄▄▄▄▄▄█▄██▄███▄███▄▄▄██▄██▄██
 
-[2019-03-14T00:57:33.157] [INFO] chatwe - Please press confirm on your phone.
-[2019-03-14T00:57:34.272] [INFO] chatwe - Please press confirm on your phone.
-[2019-03-14T00:57:35.394] [INFO] chatwe - Please press confirm on your phone.
+Please press confirm on your phone.
+Please press confirm on your phone.
+Please press confirm on your phone.
 
 ```
 
@@ -88,6 +88,125 @@ what you need is execute it and scan qrcode in the console
 
 ## License
 MIT
+
+
+## API Usage
+
+ - registerTextHandler
+```
+wechat.registerTextHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerMapHandler
+```
+wechat.registerMapHandler(async function (msg) {
+  await msg.Download() // saved filename is msg.Content
+  console.log(msg)
+})
+```
+
+ - registerImageHandler
+```
+wechat.registerImageHandler(async function (msg) {
+  await msg.Download() // saved filename is msg.Content
+  console.log(msg)
+})
+```
+
+ - registerVoiceHandler
+```
+wechat.registerVoiceHandler(async function (msg) {
+  await msg.Download() // saved filename is msg.Content
+  console.log(msg)
+})
+```
+
+ - registerVideoHandler
+```
+wechat.registerVideoHandler(async function (msg) {
+  await msg.Download() // saved filename is msg.Content
+  console.log(msg)
+})
+```
+
+ - registerSysHandler
+```
+wechat.registerSysHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerFriendHandler
+```
+wechat.registerFriendHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerCardHandler
+```
+wechat.registerCardHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerStatusHandler
+```
+wechat.registerStatusHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerRecallHandler
+```
+wechat.registerRecallHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerFileHandler
+```
+wechat.registerFileHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - registerNoteHandler
+```
+wechat.registerNoteHandler(async function (msg) {
+  console.log(msg)
+})
+```
+
+ - reply
+```
+wechat.registerTextHandler(async function (msg) {
+  await this.reply(msg,'[received]')
+})
+```
+
+ - replyTo
+```
+wechat.registerTextHandler(async function (msg) {
+  await this.replyTo('filehelper','[received]')
+})
+```
+
+ - replyFile
+```
+wechat.registerTextHandler(async function (msg) {
+  await this.replyFile(msg,'./abcd.txt')
+})
+```
+
+ - replyFileTo
+```
+wechat.registerTextHandler(async function (msg) {
+  await this.replyFileTo('filehelper','./abcd.gif')
+})
+```
 
 ## Documentation
  > TODO
