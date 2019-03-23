@@ -81,9 +81,9 @@ Please press confirm on your phone.
  - √ Reply ChatRoom Message
  - √ Revoke Message
  - √ 50%+ UT Coverage
- - × Reply Voice Message                 [not supported by web wechat]
- - × Create ChatRoom                     [not supported by web wechat]
- - × Manage Chatroom Member(add/delete)  [not supported by web wechat]
+ - × Reply Voice Message                 `[not supported by web wechat]`
+ - × Create ChatRoom                     `[not supported by web wechat]`
+ - × Manage Chatroom Member(add/delete)  `[not supported by web wechat]`
  - × Plugin Support(AI/Robot plugin)
 
 ## License
@@ -131,6 +131,14 @@ wechat.registerVideoHandler(async function (msg) {
 })
 ```
 
+ - registerFileHandler
+```
+wechat.registerFileHandler(async function (msg) {
+  await msg.Download() // saved filename is msg.Content
+  console.log(msg)
+})
+```
+
  - registerSysHandler
 ```
 wechat.registerSysHandler(async function (msg) {
@@ -162,13 +170,6 @@ wechat.registerStatusHandler(async function (msg) {
  - registerRecallHandler
 ```
 wechat.registerRecallHandler(async function (msg) {
-  console.log(msg)
-})
-```
-
- - registerFileHandler
-```
-wechat.registerFileHandler(async function (msg) {
   console.log(msg)
 })
 ```
