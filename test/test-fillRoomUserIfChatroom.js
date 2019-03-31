@@ -73,6 +73,38 @@ test('wechat parseContentIfChatroom 1', async function (t) {
   t.equal(undefined, msg.IsAtMe)
 })
 
+test('wechat parseContentIfChatroom 2', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = { 'UserName': 'yizhiren', 'NickName': 'sb' }
+
+  let msg = { MsgType: 2, Content: '@12345:<br/>hi' }
+  wechat.parseContentIfChatroom(UserTypes.USER_TYPE_CHATROOM, {
+    MemberList: [
+      { UserName: '@12345', Tag: 'X' },
+      { UserName: 'yizhiren', Tag: 'Y' }
+    ]
+  }, msg)
+  t.equal('X', msg.ChatRoomUser.Tag)
+  t.equal('hi', msg.Content)
+  t.equal(undefined, msg.IsAtMe)
+})
+
+test('wechat parseContentIfChatroom 3', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = { 'UserName': 'yizhiren', 'NickName': 'sb' }
+
+  let msg = { MsgType: 3, Content: '@12345:<br/>hi' }
+  wechat.parseContentIfChatroom(UserTypes.USER_TYPE_CHATROOM, {
+    MemberList: [
+      { UserName: '@12345', Tag: 'X' },
+      { UserName: 'yizhiren', Tag: 'Y' }
+    ]
+  }, msg)
+  t.equal('X', msg.ChatRoomUser.Tag)
+  t.equal('hi', msg.Content)
+  t.equal(undefined, msg.IsAtMe)
+})
+
 test('cleanup', function (t) {
   t.end()
 })
