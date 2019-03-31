@@ -127,6 +127,19 @@ test('wechat pickMainInfoFromMsg MSGTYPE_APP.APPMSGTYPE_REALTIME_SHARE_LOCATION'
   t.equal('aaa.xyz', resp.Content)
 })
 
+test('wechat pickMainInfoFromMsg MSGTYPE_APP.APPMSGTYPE_URL', async function (t) {
+  wechat.loginInfo['url'] = Config.BASE_URL
+  wechat.loginInfo['User'] = {}
+
+  let resp = await wechat.pickMainInfoFromMsg({
+    MsgType: MsgTypes.MSGTYPE_APP,
+    AppMsgType: AppMsgTypes.APPMSGTYPE_URL,
+    EncryFileName: 'aaa.xyz'
+  })
+  t.equal(resp.Type, 'Note')
+  t.equal('aaa.xyz', resp.Content)
+})
+
 test('wechat pickMainInfoFromMsg MSGTYPE_APP.other', async function (t) {
   wechat.loginInfo['url'] = Config.BASE_URL
   wechat.loginInfo['User'] = {}
